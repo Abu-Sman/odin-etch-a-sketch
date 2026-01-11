@@ -1,27 +1,44 @@
 "use strict";
 
 const containerEl = document.querySelector(".container");
-let squaresPerSide = 16;
+let squaresPerSide = 8;
 
 const drawCanvas = function (squaresPerSide) {
   for (let i = 0; i < squaresPerSide ** 2; i++) {
-    const sqaure = document.createElement("div");
-    sqaure.style.flex = `1 0 calc(100% / ${squaresPerSide})`;
-    containerEl.appendChild(sqaure);
+    const square = document.createElement("div");
+    square.style.flex = `1 0 calc(100% / ${squaresPerSide})`;
+    containerEl.appendChild(square);
   }
 };
-
 drawCanvas(squaresPerSide);
+
+const getRandomColor = function () {
+  const random1 = Math.floor(Math.random() * 256);
+  const random2 = Math.floor(Math.random() * 256);
+  const random3 = Math.floor(Math.random() * 256);
+  return `${random1}, ${random2}, ${random3}`;
+};
+
+const updateOpacity = function (el, e) {
+  const currentOpactiy = window
+    .getComputedStyle(el)
+    .getPropertyValue(`opacity`);
+  e.target.style.opacity = `${Number(currentOpactiy) + 0.1}`;
+};
 
 const getDrawing = function () {
   const squareEls = containerEl.querySelectorAll("div");
   squareEls.forEach((square) => {
+    // Set initial opcaity
+    square.style.opacity = `0.0`;
+    // Set random color
+    square.style.background = `rgba(${getRandomColor()})`;
+
     square.addEventListener("mouseenter", (e) => {
-      e.target.style.background = `#000`;
+      updateOpacity(square, e);
     });
   });
 };
-
 getDrawing();
 
 const bntEl = document.querySelector(".btn");
